@@ -6,7 +6,7 @@
 .\"
 .TH PTSNAME 3 2020-06-09 "" "Linux Programmer's Manual"
 .SH NAME
-ptsname, ptsname_r \- get the name of the slave pseudoterminal
+ptsname, ptsname_r \- get the name of the terminal corresponding to a pseudoterminal
 .SH SYNOPSIS
 .B #include <stdlib.h>
 .PP
@@ -37,15 +37,15 @@ Glibc 2.23 and earlier:
 .SH DESCRIPTION
 The
 .BR ptsname ()
-function returns the name of the slave pseudoterminal device
-corresponding to the master referred to by the file descriptor
+function returns the name of the terminal device
+corresponding to the pseudoterminal device referred to by the file descriptor
 .IR fd .
 .PP
 The
 .BR ptsname_r ()
 function is the reentrant equivalent of
 .BR ptsname ().
-It returns the name of the slave pseudoterminal device as a
+It returns the name of the terminal device as a
 null-terminated string in the buffer pointed to by
 .IR buf .
 The
@@ -79,7 +79,7 @@ glibc 2.25 and earlier.)
 .TP
 .B ENOTTY
 .I fd
-does not refer to a pseudoterminal master device.
+does not refer to a pseudoterminal device.
 .TP
 .B ERANGE
 .RB ( ptsname_r ()

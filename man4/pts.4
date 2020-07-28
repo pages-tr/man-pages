@@ -7,50 +7,54 @@
 .\"
 .TH PTS 4 2016-03-15 "Linux" "Linux Programmer's Manual"
 .SH NAME
-ptmx, pts \- pseudoterminal master and slave
+ptmx, pts \- pseudoterminal devices
 .SH DESCRIPTION
 The file
 .I /dev/ptmx
 (the pseudoterminal multiplexor device)
 is a character file with major number 5 and
 minor number 2, usually with mode 0666 and ownership root:root.
-It is used to create a pseudoterminal master and slave pair.
+It is used to create a pseudoterminal device pair.
 .PP
 When a process opens
 .IR /dev/ptmx ,
 it gets a file
-descriptor for a pseudoterminal master
-and a pseudoterminal slave device is created in the
+descriptor for a new pseudoterminal device
+and a corresponding terminal device is created in the
 .I /dev/pts
 directory.
 Each file descriptor obtained by opening
 .IR /dev/ptmx
-is an independent pseudoterminal master with its own associated slave,
+is an independent pseudoterminal device with its own associated terminal device,
 whose path can
 be found by passing the file descriptor to
 .BR ptsname (3).
 .PP
-Before opening the pseudoterminal slave, you must pass the master's file
+Before opening the corresponding terminal device,
+you must pass the pseudoterminal device's file
 descriptor to
 .BR grantpt (3)
 and
 .BR unlockpt (3).
 .PP
-Once both the pseudoterminal master and slave are open, the slave provides
+Once both the pseudoterminal device and the terminal device are open,
+the terminal device provides
 processes with an interface that is identical to that of a real terminal.
 .PP
-Data written to the slave is presented on the master file descriptor as input.
-Data written to the master is presented to the slave as input.
+Data written to the terminal device is presented on
+the pseudoterminal device as input.
+Data written to the pseudoterminal device is presented
+to the terminal device as input.
 .PP
 In practice, pseudoterminals are used for implementing terminal emulators
 such as
 .BR xterm (1),
-in which data read from the pseudoterminal master is interpreted by the
+in which data read from the pseudoterminal device is interpreted by the
 application in the same way
 a real terminal would interpret the data, and for implementing remote-login
 programs such as
 .BR sshd (8),
-in which data read from the pseudoterminal master is sent across the network
+in which data read from the pseudoterminal device is sent across the network
 to a client program that is connected to a terminal or terminal emulator.
 .PP
 Pseudoterminals can also be used to send input to programs that normally

@@ -38,11 +38,11 @@ openpty, login_tty, forkpty \- terminal utility functions
 .nf
 .B #include <pty.h>
 .PP
-.BI "int openpty(int *" amaster ", int *" aslave ", char *" name ,
+.BI "int openpty(int *" fd_pty ", int *" fd_tty ", char *" name ,
 .BI "            const struct termios *" termp ,
 .BI "            const struct winsize *" winp );
 .PP
-.BI "pid_t forkpty(int *" amaster ", char *" name ,
+.BI "pid_t forkpty(int *" fd_pty ", char *" name ,
 .BI "              const struct termios *" termp ,
 .BI "              const struct winsize *" winp );
 
@@ -55,23 +55,26 @@ Link with \fI\-lutil\fP.
 .SH DESCRIPTION
 The
 .BR openpty ()
-function finds an available pseudoterminal and returns file descriptors
-for the master and slave in
-.I amaster
+function finds an available pseudoterminal device pair
+and returns file descriptors
+for the pseudoterminal device and the corresponding terminal device in
+.I fd_pty
 and
-.IR aslave .
+.IR fd_tty .
 If
 .I name
-is not NULL, the filename of the slave is returned in
+is not NULL, the filename of the corresponding terminal device is returned in
 .IR name .
 If
 .I termp
-is not NULL, the terminal parameters of the slave will be set to the
+is not NULL, the terminal parameters of the corresponding terminal device
+will be set to the
 values in
 .IR termp .
 If
 .I winp
-is not NULL, the window size of the slave will be set to the values in
+is not NULL, the window size of the corresponding terminal device
+will be set to the values in
 .IR winp .
 .PP
 The
@@ -79,7 +82,8 @@ The
 function prepares for a login on the terminal
 referred to by the file descriptor
 .I fd
-(which may be a real terminal device, or the slave of a pseudoterminal as
+(which may be a real terminal device,
+or the terminal end of a pseudoterminal device pair as
 returned by
 .BR openpty ())
 by creating a new session, making
@@ -99,19 +103,20 @@ and
 .BR login_tty ()
 to create a new process operating in a pseudoterminal.
 A file descriptor referring to
-master side of the pseudoterminal is returned in
-.IR amaster .
+the pseudoterminal end of the pseudoterminal device pair
+is returned in
+.IR fd_pty .
 If
 .I name
 is not NULL, the buffer it points to is used to return the
-filename of the slave.
+filename of the corresponding terminal device.
 The
 .I termp
 and
 .I winp
 arguments, if not NULL,
-will determine the terminal attributes and window size of the slave
-side of the pseudoterminal.
+will determine the terminal attributes and window size of the terminal end
+of the pseudoterminal device pair.
 .SH RETURN VALUE
 If a call to
 .BR openpty (),

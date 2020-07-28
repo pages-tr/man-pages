@@ -4,7 +4,7 @@
 .\"
 .TH UNLOCKPT 3 2017-07-13 "" "Linux Programmer's Manual"
 .SH NAME
-unlockpt \- unlock a pseudoterminal master/slave pair
+unlockpt \- unlock a pseudoterminal device pair
 .SH SYNOPSIS
 .B #define _XOPEN_SOURCE
 .br
@@ -32,12 +32,13 @@ Glibc 2.23 and earlier:
 .SH DESCRIPTION
 The
 .BR unlockpt ()
-function unlocks the slave pseudoterminal device
-corresponding to the master pseudoterminal referred to by the file descriptor
+function unlocks the terminal device
+corresponding to the pseudoterminal device referred to by the file descriptor
 .IR fd .
 .PP
 .BR unlockpt ()
-should be called before opening the slave side of a pseudoterminal.
+should be called before opening the terminal end of
+a pseudoterminal device pair.
 .SH RETURN VALUE
 When successful,
 .BR unlockpt ()
@@ -55,7 +56,7 @@ argument is not a file descriptor open for writing.
 .B EINVAL
 The
 .I fd
-argument is not associated with a master pseudoterminal.
+argument is not associated with a pseudoterminal device.
 .SH VERSIONS
 .BR unlockpt ()
 is provided in glibc since version 2.1.

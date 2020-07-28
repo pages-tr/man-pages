@@ -45,7 +45,7 @@ _XOPEN_SOURCE\ >=\ 600
 .SH DESCRIPTION
 The
 .BR posix_openpt ()
-function opens an unused pseudoterminal master device, returning a
+function opens an unused pseudoterminal device, returning a
 file descriptor that can be used to refer to that device.
 .PP
 The
@@ -109,10 +109,12 @@ posix_openpt(int flags)
 .PP
 Calling
 .BR posix_openpt ()
-creates a pathname for the corresponding pseudoterminal slave device.
-The pathname of the slave device can be obtained using
+creates a pathname for the terminal device that corresponds
+to the pseudoterminal.
+The pathname of the terminal device can be obtained using
 .BR ptsname (3).
-The slave device pathname exists only as long as the master device is open.
+The terminal device pathname exists only as long as
+the pseudoterminal device is open.
 .SH SEE ALSO
 .BR open (2),
 .BR getpt (3),
